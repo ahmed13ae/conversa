@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ExController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//user related routes
+Route::get('/',[UserController::class,'showCorrectHome']);
+Route::post('/register',[UserController::class,'register']);
+Route::post('/login',[UserController::class,'login']);
+Route::post('/logout',[UserController::class,'logout']);
 
-Route::get('/about',[ExController::class,'about']);
+//post realated routes
+Route::get('/create-post',[PostController::class,'showCreateForm']);
+Route::post('/create-post',[PostController::class,'createPost']);
