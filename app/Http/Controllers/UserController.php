@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 
 class UserController extends Controller
 {
@@ -49,5 +50,18 @@ class UserController extends Controller
     {
        auth()->logout();
        return redirect('/')->with('success','You logged Out successsfully');
+    }
+    //---------------profile controllers---------------------
+
+    //show profile
+    public function profile(User $user){
+        return view('profile-posts',['user'=>$user,'posts'=>$user->posts()->latest()->get(),'postsCount'=>$user->posts()->count()]);
+    }
+    public function showAvatarForm(){
+        return view('avatar-form');
+    }
+    public function changeAvatar(Request $request){
+        $request->file('avatar')->store('public/avatars');
+        Return 'hey';
     }
 }
