@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +34,16 @@ Route::get('/post/{post}',[PostController::class,'showSinglePost']);
 Route::delete('/post/{post}',[PostController::class,'delete'])->middleware('can:delete,post'); 
 Route::get('/post/{post}/edit',[PostController::class,'showEditForm'])->middleware('can:update,post'); 
 Route::put('/post/{post}',[PostController::class,'update'])->middleware('can:update,post'); 
+Route::get('/search/{term}',[PostController::class,'search']);
 
+//following related routes
+Route::post('/create-follow/{user:username}',[FollowController::class,'createFollow']);
+Route::post('/remove-follow/{user:username}',[FollowController::class,'removeFollow']);
 
 //profile related routes
-Route::get('/profile/{user:username}',[UserController::class,'profile'])->middleware('loggedIn');
-Route::get('/manage-avatar',[UserController::class,'showAvatarForm']);
-Route::post('/manage-avatar',[UserController::class,'changeAvatar']);
+Route::get('/profile/{user:username}',[UserController::class,'profilePosts']);
+Route::get('/profile/{user:username}/followers',[UserController::class,'profileFollowers']);
+Route::get('/profile/{user:username}/following',[UserController::class,'profileFollowing']);
+Route::get('/manage-avatar',[UserController::class,'showAvatarForm'])->middleware('loggedIn');
+Route::post('/manage-avatar',[UserController::class,'changeAvatar'])->middleware('loggedIn');
 
